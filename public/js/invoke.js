@@ -32,6 +32,7 @@ function validarFormaHuesped() {
 
 $('#btnSubmitAnfitrion').on('click', function () { 
     if(validarFormaAnfitrion()){
+      /* 
       dataToSend = {
         nombres: $('#txtNombres')[0].value,
         paterno: $('#txtPaterno')[0].value,
@@ -40,6 +41,37 @@ $('#btnSubmitAnfitrion').on('click', function () {
         direccion: $('#txtDireccion')[0].value,
         pais: $('#selPais').val(),
         cantidad: $('#selCantidadPersonas').val()
+      }*/
+      dataToSend = {
+        "datosDeContacto": {
+          "correoElectronico": "yo@aqui.com",
+          "telefono": "+34 55 55 55"
+        },
+        "datosDelHogarDeAcogida": {
+          "geometry": {
+            "coordinates": [
+              -3.700660,
+              40.417720
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "direccion": $('#txtDireccion')[0].value,
+            "pais": $('#selPais').val(),
+            "regionOEstado": "Madrid",
+            "capacidad":$('#selCantidadPersonas').val()
+          },
+          "type": "Feature"
+        },
+        "datosPersonales": {
+          "apellidoMaterno": $('#txtMaterno')[0].value,
+          "apellidoPaterno": $('#txtPaterno')[0].value,
+          "nombres": $('#txtNombres')[0].value,
+          "numeroDePasaporte":$('#txtIdPasaporte')[0].value
+        },
+        "disponible": true,
+        "verificado": false,
+        "imagen":""
       }
       alert( "Enviando json: " + JSON.stringify(dataToSend))
       //llamada asíncrona a servidor
