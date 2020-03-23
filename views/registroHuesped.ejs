@@ -2,12 +2,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>SRE formato de Mexicano varado en el extranjero</title>
+<title>SRE formato de solicitud de ayuda</title>
 <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
 <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="./js/capture.js"></script>
-
 <style type="text/css">
 body{
 	background:#FFFFFF;
@@ -143,6 +140,15 @@ body{
     height: 200px;
 }
 
+#stream {
+  display: none;
+}
+#capture {
+  display: none;
+}
+#iconRed {
+  display: none;
+}
 </style>
 <script>
 var calloutDelegate = {
@@ -225,7 +231,20 @@ function toggleCheckbox() {
 		document.miForma.boton.style.display = "block"
 	}
 }
-
+function validarForma() {
+	if (!document.miForma.field10.checked) {
+		alert("Debe aceptar los términos y condiciones");
+		return false;
+	}
+	else if (document.miForma.field1.value.trim() == "" || document.miForma.field2.value.trim() == "" || document.miForma.field4.value.trim() == "") {
+		alert("Debe rellenar todos sus datos personales");
+		return false;
+	}
+	else if (document.miForma.field5.value.trim() == "" || document.miForma.field6.value.trim() == "") {
+		alert("Debe rellenar todos sus datos de contacto");
+		return false;
+	}
+}
 function getPosition(err, data) {
 	var lat = data.results[0].coordinate.latitude;
 	var lon = data.results[0].coordinate.longitude;
@@ -248,77 +267,208 @@ function actualizarMapa() {
 	var direccion = document.miForma.field8.value + ", " + document.miForma.field9.value + ", " + document.miForma.pais.value;
 	var geocoder = new mapkit.Geocoder().lookup(direccion, getPosition);
 }
+
+var numRenglones = 0;
+
+// The video stream
+var cameraStream = null;
+
+// Start Streaming
+function startStreaming() {
+
+  var mediaSupport = 'mediaDevices' in navigator;
+
+  if (mediaSupport && null == cameraStream) {
+
+	document.getElementById("stream").style.display = "block";
+	document.getElementById("snapshot").style.display = "none";
+	document.getElementById("iconGreen").style.display = "none";
+	document.getElementById("iconRed").style.display = "block";
+	
+    navigator.mediaDevices.getUserMedia({ video: true }).
+    then(function (mediaStream) {
+
+      cameraStream = mediaStream;
+
+      stream.srcObject = mediaStream;
+
+      stream.play();
+    }).
+    catch(function (err) {
+	    alert('Se ha producido un error al intentar accesar la cámara. Es posible que su navegador no permita sacar fotografías. Intente volver a cargar esta página pero si el problema persiste por favor intente rellenar esta forma desde otro dispositivo.');
+		document.getElementById("stream").style.display = "none";
+		document.getElementById("iconGreen").style.display = "block";
+		document.getElementById("iconRed").style.display = "none";
+    	console.log("Unable to access camera: " + err);
+    });
+  } else
+  {
+    alert('Su navegador no permite sacar fotografías. Por favor intente rellenar esta forma desde otro dispositivo.');
+
+    return;
+  }
+}
+
+// Stop Streaming
+function stopStreaming() {
+
+  if (null != cameraStream) {
+
+    var track = cameraStream.getTracks()[0];
+
+    track.stop();
+    stream.load();
+
+    cameraStream = null;
+  }
+}
+
+// Take picture
+function captureSnapshot() {
+
+  if (null != cameraStream) {
+	capture.width = stream.videoWidth;
+	capture.height = stream.videoHeight;
+    var ctx = capture.getContext('2d');
+    var img = new Image(capture.width, capture.height);
+
+    ctx.drawImage(stream, 0, 0, capture.width, capture.height);
+
+    img.src = capture.toDataURL("image/png");
+    img.width = 390;
+    img.height = 390 * (capture.height / capture.width);
+
+    snapshot.innerHTML = '';
+    snapshot.appendChild(img);
+  }
+}
+
+// Take picture and stop streaming
+function takePicture() {
+	captureSnapshot();
+	stopStreaming();
+	document.getElementById("iconRed").style.display = "none";
+	document.getElementById("iconGreen").style.display = "block";
+	document.getElementById("stream").style.display = "none";
+	document.getElementById("snapshot").style.display = "block";
+}
+
+// Manejo de la tabla de acompañantes
+
+function agregarRenglon() {
+	if (numRenglones == 0) {
+		// Crear tabla
+        var table = document.createElement("TABLE");
+        table.border = "1";
+
+        var row = table.insertRow(-1);
+        
+		var headers = ["Nombre(s)", "Apellido(s)", "Edad", "Acción"];
+        for (var i = 0; i < 4; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = headers[i];
+            row.appendChild(headerCell);
+        }
+
+        numRenglones = 1;
+        actualizaNumRenglones();
+
+        var row2 = table.insertRow(-1);
+        
+        for (var i = 0; i < 4; i++) {
+	        var cell = document.createElement("td");
+            var field = document.createElement("input");
+        	if (i < 3) {
+				field.setAttribute("type", "text");
+	            cell.appendChild(field);
+	        } else {
+				field.setAttribute("type", "button");
+				field.setAttribute("value", "Borrar");
+				field.setAttribute("onClick", "borrarRenglon(1)");
+	            cell.appendChild(field);
+	        }
+            row2.appendChild(cell);
+        }
+
+		var divTable = document.getElementById("divTable");
+        divTable.appendChild(table);
+    } else {
+    }
+}
+
+function actualizaNumRenglones() {
+	var label = document.getElementById("Num");
+	label.innerHTML = "Número de acompañantes: " + numRenglones;
+}
 </script>
 </head>
 
 <body>
 <center>
-<img src="./images/SRE.png">
+<img src="SRE.png">
 </center>
 
 <div class="form-style-10">
-<h1>Registro de mexicanos varados en el extranjero<span>Lamentamos su situación. La SRE hará lo posible de poner en contacto a otro mexicano que desee compartir su casa en un lugar en el pais donde usted se encuentra.</span></h1>
-<form name="miForma" onsubmit="return validarForma()" id="frmGuestData">
+<h1>Solicitud de ayuda<span>La SRE está para ayudar a los mexicanos varados en el extranjero</span></h1>
+<form name="miForma" onsubmit="return validarForma()">
     <div class="section"><span>1</span>Datos personales</div>
     <div class="inner-wrap">
-        <label>Nombre(s) <input type="text" name="field1" value="Pedro" id="txtNombres" /></label>
-        <label>Apellido paterno  <input type="text" name="field2" id="txtPaterno" value="Páramo"/></label>
-        <label>Apellido materno  <input type="text" name="field3" id="txtMaterno" value="Pérez"/></label>
-        <label>Número de pasaporte  <input type="text" name="field4" id="txtIdPasaporte" value="G123446567"/></label>
+        <label>Nombre(s) <input type="text" name="field1" /></label>
+        <label>Apellido paterno  <input type="text" name="field2" /></label>
+        <label>Apellido materno  <input type="text" name="field3" /></label>
+        <label>Número de pasaporte  <input type="text" name="field4" /></label>
+		<label>Fotografía</label>
+		<div class="streamSection">
+			<video id="stream" width="100%"></video>
+			<canvas id="capture"></canvas>
+		</div>
+		<div class="pictureSection">
+			<div id="snapshot" width="100%"></div>
+		</div>
+		<div class="greenIconSection">
+			<center><a id="iconGreen" onclick="startStreaming()"><img src="TakePictureGreen.png"></a></center>
+		</div>
+		<div class="greenIconSection">
+			<center><a id="iconRed" onclick="takePicture()"><img src="TakePictureRed.png"></a></center>
+		</div>
     </div>
 
-    <div class="section"><span>2</span>Datos de contacto</div>
+    <div class="section"><span>2</span>Acompañantes</div>
     <div class="inner-wrap">
-        <label>Correo electrónico <input type="email" name="field5" id="txtEmail" value="pedroppp@gmail.com" /></label>
-        <label>Teléfono <input type="text" name="field6" id="txtTelefono" value="2322322323"/></label>
+        <label id="Num">Número de acompañantes: 0</label>
+		<div id="divTable"></div>
+		<input type = "button" name="boton" value="Agregar acompañante" onclick="agregarRenglon()">
     </div>
 
-    <div class="section"><span>3</span>Datos del hogar de acogida</div>
+    <div class="section"><span>3</span>Datos de contacto</div>
+    <div class="inner-wrap">
+        <label>Correo electrónico <input type="email" name="field5" /></label>
+        <label>Teléfono <input type="text" name="field6" /></label>
+    </div>
+
+    <div class="section"><span>4</span>Ubicación actual</div>
         <div class="inner-wrap">
 		<span class="Automatic"><input type="checkbox" name="field7" onchange="toggleCheckbox()">Obtener de su ubicación actual</span><p>
-        <label>Dirección <input type="text" name="field8" id="txtDireccion" /></label>
-		<label>Región/Estado <input type="text" name="field9" id="txtRegion" /></label>
-		<label>Cantidad Personas a hospedar
-			<select id="selCantidadPersonas">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-			</select>
-		</label>
+        <label>Dirección <input type="text" name="field8" /></label>
+        <label>Región/Estado <input type="text" name="field9" /></label>
 		<label>País
-		<select id="selPais">
+		<select id="pais">
+			<option value="Alemania">Alemania</option>
+			<option value="Bélgica">Bélgica</option>
 			<option value="España">España</option>
 			<option value="Estados Unidos de América">Estados Unidos de América</option>
 			<option value="Francia">Francia</option>
+			<option value="Italia">Italia</option>
 			<option value="México">México</option>
 			<option value="Países Bajos">Países Bajos</option>
+			<option value="Portugal">Portugal</option>
 		</select>
 		</label>
 		<div id="map"></div>
 		<input type = "button" name="boton" value="Actualizar mapa" onclick="actualizarMapa()">
-	</div>
-	<div class="section"><span>4</span>Foto</div>
-	<div class="inner-wrap">
-		<div class="camera">
-			<video id="video">Video stream not available.</video>
-
-			<input id="startbutton" type = "button" name="boton" value="Take Foto" onclick="actualizarMapa()">
-		  </div>
-		  <canvas id="canvas">
-		  </canvas>
-		  <div id="photo" class="output">
-
-		  </div>
-</div>
+    </div>
     <div class="button-section">
-     <input type="button" value="Enviar" name="Sign Up" id="btnSubmitHuesped"/>
+     <input type="submit" value="Enviar" name="Sign Up" />
      <span class="privacy-policy">
      <input type="checkbox" name="field10">Acepta Términos y Condiciones 
      </span>
@@ -329,9 +479,14 @@ function actualizarMapa() {
 </div>
 
 <script>
+// The stream & capture
+var stream = document.getElementById("stream");
+var capture = document.getElementById("capture");
+var snapshot = document.getElementById("snapshot");
+
 mapkit.init({  
     authorizationCallback: function(done) {
-    done('eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IlVKOEcyRzQ3MlIifQ.eyJpc3MiOiI2Sk4yODVRVVM4IiwiaWF0IjoxNTg0ODE1MjU2LjI4ODY0LCJleHAiOjE1ODQ5MDE2NTYuMjg4NjR9.qhvqVIQfUwmIKcb2fq60xk_netS9Fbzq7KNZUVdqcpeLSy3JC2BVPxvlcSpw4dltB4a2z4EYOjbF0Iyj9CeJ_A');
+    done('eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IlVKOEcyRzQ3MlIifQ.eyJpc3MiOiI2Sk4yODVRVVM4IiwiaWF0IjoxNTg0OTI1MzgxLjk2MDkzODksImV4cCI6MTU4NTAxMTc4MS45NjA5Mzk5fQ.TvcIlEHbTnP9PXsfWONAucpDwg-246Yrzt9byf4DPCWArZxQttyOc_VGaY2Wvo4KWlvBjNiQeCnxFfTHabqosg');
     }
 });
 
@@ -341,8 +496,7 @@ if (navigator.geolocation) {
   	// El mapa no soporta geolocalización, no presentar opción
   	document.miForma.field7.style.display = "none"
 }
-$()
 </script>
-<script src="./js/invoke.js"></script>
+
 </body>
 </html>
