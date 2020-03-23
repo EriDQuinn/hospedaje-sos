@@ -36,20 +36,10 @@ function validarFormaHuesped() {
 
 $('#btnSubmitAnfitrion').on('click', function () { 
     if(validarFormaAnfitrion()){
-      /* 
-      dataToSend = {
-        nombres: $('#txtNombres')[0].value,
-        paterno: $('#txtPaterno')[0].value,
-        materno: $('#txtMaterno')[0].value,
-        idPasaporte: $('#txtIdPasaporte')[0].value,
-        direccion: $('#txtDireccion')[0].value,
-        pais: $('#selPais').val(),
-        cantidad: $('#selCantidadPersonas').val()
-      }*/
       dataToSend = {
         "datosDeContacto": {
-          "correoElectronico": "yo@aqui.com",
-          "telefono": "+34 55 55 55"
+          "correoElectronico": $('#txtEmail')[0].value.trim(),
+          "telefono": $('#txtTelefono')[0].value.trim()
         },
         "datosDelHogarDeAcogida": {
           "geometry": {
@@ -60,18 +50,18 @@ $('#btnSubmitAnfitrion').on('click', function () {
             "type": "Point"
           },
           "properties": {
-            "direccion": $('#txtDireccion')[0].value,
+            "direccion": $('#txtDireccion')[0].value.trim(),
             "pais": $('#selPais').val(),
-            "regionOEstado": "Madrid",
+            "regionOEstado": $('#txtDireccion')[0].value.trim(),
             "capacidad":$('#selCantidadPersonas').val()
           },
           "type": "Feature"
         },
         "datosPersonales": {
-          "apellidoMaterno": $('#txtMaterno')[0].value,
-          "apellidoPaterno": $('#txtPaterno')[0].value,
+          "apellidoMaterno": $('#txtMaterno')[0].value.trim(),
+          "apellidoPaterno": $('#txtPaterno')[0].value.trim(),
           "nombres": $('#txtNombres')[0].value,
-          "numeroDePasaporte":$('#txtIdPasaporte')[0].value
+          "numeroDePasaporte":$('#txtIdPasaporte')[0].value.trim()
         },
         "disponible": true,
         "verificado": false/*,

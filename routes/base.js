@@ -27,7 +27,7 @@ router.get('/registroHuesped', function(req, res, next) {
   res.render('registroHuesped');
 });
 
-/* Invocación a backend para almacenar anfitrión */
+/* Invocación a backend para almacenar anfitrión. Request se recibe de UI */
 router.post('/saveAnfitrion', function(req, res, next) {
   //console.log(req.body)
   if (!req.body || req.body.length === 0) {
@@ -37,6 +37,7 @@ router.post('/saveAnfitrion', function(req, res, next) {
     
     //call a Functions off-server
     console.log("Data repo uri " + process.env.DATA_REPO_ANFITRION_URI)
+
     var options = {
       method: 'PUT',
       uri: process.env.DATA_REPO_ANFITRION_URI,
