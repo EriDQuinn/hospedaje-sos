@@ -6,7 +6,6 @@
 <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
 <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="./js/capture.js"></script>
 
 <style type="text/css">
 body{
@@ -143,6 +142,15 @@ body{
     height: 200px;
 }
 
+#stream {
+  display: none;
+}
+#capture {
+  display: none;
+}
+#iconRed {
+  display: none;
+}
 </style>
 <script>
 var calloutDelegate = {
@@ -238,33 +246,130 @@ function getPosition(err, data) {
     );
     var annotation = new mapkit.MarkerAnnotation(thePos, {
     	title: document.miForma.field8.value,
-    	subtitle: document.miForma.field9.value + ", " + document.miForma.pais.value,
+    	subtitle: document.miForma.field9.value + ", " + document.miForma.selPais.value,
     	callout: calloutDelegate
 	});
 	map.showItems([annotation]);  
 	map.region = here;
 }
 function actualizarMapa() {
-	var direccion = document.miForma.field8.value + ", " + document.miForma.field9.value + ", " + document.miForma.pais.value;
+	var direccion = document.miForma.field8.value + ", " + document.miForma.field9.value + ", " + document.miForma.selPais.value;
 	var geocoder = new mapkit.Geocoder().lookup(direccion, getPosition);
+}
+
+// The video stream
+var cameraStream = null;
+
+// Start Streaming
+function startStreaming() {
+
+  var mediaSupport = 'mediaDevices' in navigator;
+
+  if (mediaSupport && null == cameraStream) {
+
+	document.getElementById("stream").style.display = "block";
+	document.getElementById("snapshot").style.display = "none";
+	document.getElementById("iconGreen").style.display = "none";
+	document.getElementById("iconRed").style.display = "block";
+	
+    navigator.mediaDevices.getUserMedia({ video: true }).
+    then(function (mediaStream) {
+
+      cameraStream = mediaStream;
+
+      stream.srcObject = mediaStream;
+
+      stream.play();
+    }).
+    catch(function (err) {
+	    alert('Se ha producido un error al intentar accesar la cámara. Es posible que su navegador no permita sacar fotografías. Intente volver a cargar esta página pero si el problema persiste por favor intente rellenar esta forma desde otro dispositivo.');
+		document.getElementById("stream").style.display = "none";
+		document.getElementById("iconGreen").style.display = "block";
+		document.getElementById("iconRed").style.display = "none";
+    	console.log("Unable to access camera: " + err);
+    });
+  } else
+  {
+    alert('Su navegador no permite sacar fotografías. Por favor intente rellenar esta forma desde otro dispositivo.');
+
+    return;
+  }
+}
+
+// Stop Streaming
+function stopStreaming() {
+
+  if (null != cameraStream) {
+
+    var track = cameraStream.getTracks()[0];
+
+    track.stop();
+    stream.load();
+
+    cameraStream = null;
+  }
+}
+
+// Take picture
+function captureSnapshot() {
+
+  if (null != cameraStream) {
+	capture.width = stream.videoWidth;
+	capture.height = stream.videoHeight;
+    var ctx = capture.getContext('2d');
+    var img = new Image(capture.width, capture.height);
+
+    ctx.drawImage(stream, 0, 0, capture.width, capture.height);
+
+    img.src = capture.toDataURL("image/png");
+    img.width = 390;
+    img.height = 390 * (capture.height / capture.width);
+
+    snapshot.innerHTML = '';
+    snapshot.appendChild(img);
+  }
+}
+
+// Take picture and stop streaming
+function takePicture() {
+	captureSnapshot();
+	stopStreaming();
+	document.getElementById("iconRed").style.display = "none";
+	document.getElementById("iconGreen").style.display = "block";
+	document.getElementById("stream").style.display = "none";
+	document.getElementById("snapshot").style.display = "block";
 }
 </script>
 </head>
 
 <body>
 <center>
-<img src="./images/SRE.png">
+	<img src="./images/SRE.png">
 </center>
 
 <div class="form-style-10">
-<h1>¡Anfitrión, regístrese ahora!<span>Gracias a su espíritu solidario podemos ayudar a los mexicanos varados en el extranjero</span></h1>
-<form name="miForma" onsubmit="return validarForma()" id="frmGuestData">
+	<h1>¡Anfitrión, regístrese ahora!<span>Gracias a su espíritu solidario podemos ayudar a los mexicanos varados en el extranjero</span></h1>
+	<form name="miForma" onsubmit="return validarForma()" id="miForma">
     <div class="section"><span>1</span>Datos personales</div>
     <div class="inner-wrap">
         <label>Nombre(s) <input type="text" name="field1" value="Pedro" id="txtNombres" /></label>
         <label>Apellido paterno  <input type="text" name="field2" id="txtPaterno" value="Páramo"/></label>
         <label>Apellido materno  <input type="text" name="field3" id="txtMaterno" value="Pérez"/></label>
         <label>Número de pasaporte  <input type="text" name="field4" id="txtIdPasaporte" value="G123446567"/></label>
+		<label>Fotografía</label>
+		<div class="streamSection">
+			<video id="stream" width="100%"></video>
+			<canvas id="capture"></canvas>
+		</div>
+		<div class="pictureSection">
+			<div id="snapshot" width="100%"></div>
+		</div>
+		<div class="greenIconSection">
+			<center><a id="iconGreen" onclick="startStreaming()"><img src="./images/TakePictureGreen.png"></a></center>
+		</div>
+		<div class="greenIconSection">
+			<center><a id="iconRed" onclick="takePicture()"><img src="./images/TakePictureRed.png"></a></center>
+		</div>
     </div>
 
     <div class="section"><span>2</span>Datos de contacto</div>
@@ -278,20 +383,6 @@ function actualizarMapa() {
 		<span class="Automatic"><input type="checkbox" name="field7" onchange="toggleCheckbox()">Obtener de su ubicación actual</span><p>
         <label>Dirección <input type="text" name="field8" id="txtDireccion" /></label>
 		<label>Región/Estado <input type="text" name="field9" id="txtRegion" /></label>
-		<label>Cantidad Personas a hospedar
-			<select id="selCantidadPersonas">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-			</select>
-		</label>
 		<label>País
 		<select id="selPais">
 			<option value="España">España</option>
@@ -303,20 +394,18 @@ function actualizarMapa() {
 		</label>
 		<div id="map"></div>
 		<input type = "button" name="boton" value="Actualizar mapa" onclick="actualizarMapa()">
-	</div>
-	<div class="section"><span>4</span>Foto</div>
-	<div class="inner-wrap">
-		<div class="camera">
-			<video id="video">Video stream not available.</video>
-
-			<input id="startbutton" type = "button" name="boton" value="Take Foto" onclick="actualizarMapa()">
-		  </div>
-		  <canvas id="canvas">
-		  </canvas>
-		  <div id="photo" class="output">
-
-		  </div>
-</div>
+		<p>
+		<label>¿A cuántas personas podría acoger?
+		<select id="selCantidadPersonas">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5 o más</option>
+		</select>
+		</label>
+		</p>
+    </div>
     <div class="button-section">
      <input type="button" value="Enviar" name="Sign Up" id="btnSubmitAnfitrion"/>
      <span class="privacy-policy">
@@ -329,9 +418,14 @@ function actualizarMapa() {
 </div>
 
 <script>
+// The stream & capture
+var stream = document.getElementById("stream");
+var capture = document.getElementById("capture");
+var snapshot = document.getElementById("snapshot");
+
 mapkit.init({  
     authorizationCallback: function(done) {
-    done('eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IlVKOEcyRzQ3MlIifQ.eyJpc3MiOiI2Sk4yODVRVVM4IiwiaWF0IjoxNTg0ODE1MjU2LjI4ODY0LCJleHAiOjE1ODQ5MDE2NTYuMjg4NjR9.qhvqVIQfUwmIKcb2fq60xk_netS9Fbzq7KNZUVdqcpeLSy3JC2BVPxvlcSpw4dltB4a2z4EYOjbF0Iyj9CeJ_A');
+    done('eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IlVKOEcyRzQ3MlIifQ.eyJpc3MiOiI2Sk4yODVRVVM4IiwiaWF0IjoxNTg0OTI1MzgxLjk2MDkzODksImV4cCI6MTU4NTAxMTc4MS45NjA5Mzk5fQ.TvcIlEHbTnP9PXsfWONAucpDwg-246Yrzt9byf4DPCWArZxQttyOc_VGaY2Wvo4KWlvBjNiQeCnxFfTHabqosg');
     }
 });
 
@@ -341,7 +435,6 @@ if (navigator.geolocation) {
   	// El mapa no soporta geolocalización, no presentar opción
   	document.miForma.field7.style.display = "none"
 }
-$()
 </script>
 <script src="./js/invoke.js"></script>
 </body>
