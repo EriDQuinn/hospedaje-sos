@@ -28,7 +28,7 @@ router.get('/registroHuesped', function(req, res, next) {
 });
 
 /* Invocación a backend para almacenar anfitrión. Request se recibe de UI */
-router.post('/saveAnfitrion', function(req, res, next) {
+router.put('/saveAnfitrion', function(req, res, next) {
   //console.log(req.body)
   if (!req.body || req.body.length === 0) {
     return res.status(400).send('Error recibieron datos incorrectos o nulos');
@@ -42,14 +42,19 @@ router.post('/saveAnfitrion', function(req, res, next) {
       method: 'PUT',
       uri: process.env.DATA_REPO_ANFITRION_URI,
       body: req.body,
-      json: true // Automatically stringifies the body to JSON
+      json: true, // Automatically stringifies the body to JSON
+      resolveWithFullResponse : true
     };
     
 
     RP(options)
-      .then(function (parsedBody) {
-          console.log("Request exitoso. Respuesta fue %j", parsedBody )
-          res.json({data:parsedBody})
+      .then(function (fullresponse) {
+          if(fullresponse.statusCode <= 200){
+            console.log("Request exitoso. Respuesta fue %j", fullresponse.body)
+            res.json({data:fullresponse.body})
+          } else {
+            return res.status(500).send('Error parcial al invocar la función remota: ' + fullresponse.statusCode);
+          }
       })
       .catch(function (err) {
         console.error("Error", err )

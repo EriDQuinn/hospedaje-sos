@@ -64,19 +64,20 @@ $('#btnSubmitAnfitrion').on('click', function () {
           "numeroDePasaporte":$('#txtIdPasaporte')[0].value.trim()
         },
         "disponible": true,
-        "verificado": false/*,
-        "imagen": $('#capture')[0].toDataURL()*/
+        "verificado": false,
+        "imagen": $('#capture')[0].toDataURL().substr(22)
       }
       alert( "Enviando json: " + JSON.stringify(dataToSend))
       //llamada asíncrona a servidor
      $.ajax({
       url: '/saveAnfitrion',
-      type: 'POST',
+      type: 'PUT',
       // Form data
       data: dataToSend,
       dataType: 'json',
       success: function (data) {
-       alert("Muchas gracias por su ayuda para aliviar la situación emergente. Si hay candidatos para aprovechar su ayuda un representante de la SRE se pondrá en contacto con usted.")
+        alert("Muchas gracias por su ayuda para aliviar la situación emergente. Si hay candidatos para aprovechar su ayuda un representante de la SRE se pondrá en contacto con usted.")
+        $(location).attr('href', '/')
       },
       error: function (error) {
         alert("Por el momento el registro está fuera de servicio, intente más tarde.")
@@ -113,6 +114,7 @@ $('#btnSubmitAnfitrion').on('click', function () {
       dataType: 'json',
       success: function (data) {
        alert("Su información ha sido enviada a la SRE. Recibirá una comunicación una vez que se confirme que hay disponibilidad de hospedaje para usted.")
+       $(location).attr('href', '/')
       },
       error: function (error) {
         alert("Error. Ver consola backend y UI")
