@@ -1,16 +1,26 @@
 {
-	"name": "HelloWorldNodeApp",
+	"name": "hospedaje-sos",
 	"version": "0.0.1",
-        "private": true,
+	"private": true,
 	"scripts": {
 		"start": "node app.js"
 	},
 	"dependencies": {
+		"async": "^3.1.0",
+		"cookie-parser": "~1.4.4",
+		"debug": "~2.6.9",
+		"ejs": "~2.6.1",
 		"express": "4.17.x",
-		"cfenv": "1.2.x"
+		"cfenv": "1.2.x",
+		"http-errors": "~1.6.3",
+		"morgan": "~1.9.1",
+		"nodemon": "^2.0.2",
+		"request": "^2.88.0",
+		"request-promise": "^4.2.5",
+		"uuid": "^3.3.3"
 	},
 	"repository": {},
 	"engines": {
 		"node": "10.x || 12.x"
-	} 
+	}
 }

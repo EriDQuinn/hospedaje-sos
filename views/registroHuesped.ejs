@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>SRE formato de Mexicano varado en el extranjero</title>
+<link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
+<script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="./js/capture.js"></script>
+
+<style type="text/css">
+body{
+	background:#FFFFFF;
+}
+.form-style-10{
+	max-width:450px;
+	padding:30px;
+	margin:40px auto;
+	background: #FFF;
+	border-radius: 10px;
+	-webkit-border-radius:10px;
+	-moz-border-radius: 10px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.13);
+	-moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.13);
+	-webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.13);
+}
+.form-style-10 .inner-wrap{
+	padding: 30px;
+	background: #F8F8F8;
+	border-radius: 6px;
+	margin-bottom: 15px;
+}
+.form-style-10 h1{
+	background: #9D2449;
+	padding: 20px 30px 15px 30px;
+	margin: -30px -30px 30px -30px;
+	border-radius: 10px 10px 0 0;
+	-webkit-border-radius: 10px 10px 0 0;
+	-moz-border-radius: 10px 10px 0 0;
+	color: #fff;
+	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
+	font: normal 30px 'Bitter', serif;
+	-moz-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
+	-webkit-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
+	box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
+	border: 1px solid #9D2449;
+}
+.form-style-10 h1 > span{
+	display: block;
+	margin-top: 2px;
+	font: 13px Arial, Helvetica, sans-serif;
+}
+.form-style-10 label{
+	display: block;
+	font: 13px Arial, Helvetica, sans-serif;
+	color: #888;
+	margin-bottom: 15px;
+}
+.form-style-10 input[type="text"],
+.form-style-10 input[type="date"],
+.form-style-10 input[type="datetime"],
+.form-style-10 input[type="email"],
+.form-style-10 input[type="number"],
+.form-style-10 input[type="search"],
+.form-style-10 input[type="time"],
+.form-style-10 input[type="url"],
+.form-style-10 input[type="password"],
+.form-style-10 textarea,
+.form-style-10 select {
+	display: block;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	padding: 8px;
+	border-radius: 6px;
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	border: 2px solid #fff;
+	box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
+	-moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
+	-webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
+}
+
+.form-style-10 .section{
+	font: normal 20px 'Bitter', serif;
+	color: #9D2449;
+	margin-bottom: 5px;
+}
+.form-style-10 .section span {
+	background: #9D2449;
+	padding: 5px 10px 5px 10px;
+	position: absolute;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border: 4px solid #fff;
+	font-size: 14px;
+	margin-left: -45px;
+	color: #fff;
+	margin-top: -3px;
+}
+.form-style-10 input[type="button"], 
+.form-style-10 input[type="submit"]{
+	background: #9D2449;
+	padding: 8px 20px 8px 20px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	color: #fff;
+	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
+	font: normal 30px 'Bitter', serif;
+	-moz-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
+	-webkit-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
+	box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
+	border: 1px solid #9D2449;
+	font-size: 15px;
+}
+.form-style-10 input[type="button"]:hover, 
+.form-style-10 input[type="submit"]:hover{
+	background: #2A6881;
+	-moz-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.28);
+	-webkit-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.28);
+	box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.28);
+}
+.form-style-10 .privacy-policy{
+	float: right;
+	width: 250px;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #4D4D4D;
+	margin-top: 10px;
+	text-align: right;
+}
+.form-style-10 .Automatic{
+	width: 250px;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #4D4D4D;
+	margin-top: 10px;
+	text-align: right;
+}
+#map {
+    width: 100%;
+    height: 200px;
+}
+
+</style>
+<script>
+var calloutDelegate = {
+    calloutRightAccessoryForAnnotation: function() {
+        var accessoryViewRight = document.createElement("a");
+        accessoryViewRight.className = "right-accessory-view";
+        accessoryViewRight.href = "https://www.nps.gov/stli/index.htm";
+        accessoryViewRight.target = "_blank";
+        accessoryViewRight.appendChild(document.createTextNode("ⓘ"));
+
+        return accessoryViewRight;
+    }
+};
+
+function showPosition(position) {
+	document.miForma.latitud.value = position.coords.latitude
+	document.miForma.longitud.value = position.coords.longitude
+	var thePos = new mapkit.Coordinate(position.coords.latitude, position.coords.longitude)
+    var here = new mapkit.CoordinateRegion(
+    	thePos,
+        new mapkit.CoordinateSpan(0.005, 0.011)
+    );
+	map.region = here;
+	var geocoder = new mapkit.Geocoder({
+    	language: "es-MX",
+    	getsUserLocation: true
+	}).reverseLookup(new mapkit.Coordinate(position.coords.latitude, position.coords.longitude), (err, data) => {
+		var res = data.results[0].formattedAddress.split(",");
+		var i;
+		var text = ""
+		for (i = 0; i < res.length - 2; i++) { 
+  			text += res[i];
+		}
+    	document.miForma.field8.value = text
+    	document.miForma.field9.value = res[res.length - 2];
+    	document.miForma.pais.value = res[res.length - 1].trim();
+	    var annotation = new mapkit.MarkerAnnotation(thePos, {
+    		title: res[0],
+    		subtitle: document.miForma.field9.value + ", " + document.miForma.pais.value,
+    		callout: calloutDelegate
+		});
+		map.showItems([annotation]);  
+	});
+}
+function handleError(error) {
+  	switch(error.code) {
+    	case error.PERMISSION_DENIED:
+      		// User denied the request for Geolocation.
+		case error.POSITION_UNAVAILABLE:
+      		// Location information is unavailable.
+		case error.TIMEOUT:
+      		// The request to get user location timed out.
+    	case error.UNKNOWN_ERROR:
+      		// An unknown error occurred.
+
+	    	document.miForma.field8.value = "** No se pudo obtener su ubicación **";
+    		document.miForma.field9.value = "";
+    		document.miForma.pais.value = "";
+
+			var Cupertino = new mapkit.CoordinateRegion(
+    			new mapkit.Coordinate(37.3316850890998, -122.030067374026),
+        		new mapkit.CoordinateSpan(0.167647972, 0.354985255)
+        	);
+		    map.region = Cupertino;
+			break;
+	}
+}
+function toggleCheckbox() {
+	if (document.miForma.field7.checked) {
+    	navigator.geolocation.getCurrentPosition(showPosition, handleError);
+    	document.miForma.field8.disabled = true;
+    	document.miForma.field9.disabled = true;
+    	document.miForma.pais.disabled = true;
+		document.miForma.boton.style.display = "none"
+
+	} else {
+    	document.miForma.field8.disabled = false;
+    	document.miForma.field9.disabled = false;
+    	document.miForma.pais.disabled = false;
+		document.miForma.boton.style.display = "block"
+	}
+}
+
+function getPosition(err, data) {
+	var lat = data.results[0].coordinate.latitude;
+	var lon = data.results[0].coordinate.longitude;
+	document.miForma.latitud.value = lat
+	document.miForma.longitud.value = lon
+	var thePos = new mapkit.Coordinate(lat, lon)
+    var here = new mapkit.CoordinateRegion(
+    	thePos,
+        new mapkit.CoordinateSpan(0.005, 0.011)
+    );
+    var annotation = new mapkit.MarkerAnnotation(thePos, {
+    	title: document.miForma.field8.value,
+    	subtitle: document.miForma.field9.value + ", " + document.miForma.pais.value,
+    	callout: calloutDelegate
+	});
+	map.showItems([annotation]);  
+	map.region = here;
+}
+function actualizarMapa() {
+	var direccion = document.miForma.field8.value + ", " + document.miForma.field9.value + ", " + document.miForma.pais.value;
+	var geocoder = new mapkit.Geocoder().lookup(direccion, getPosition);
+}
+</script>
+</head>
+
+<body>
+<center>
+<img src="./images/SRE.png">
+</center>
+
+<div class="form-style-10">
+<h1>Registro de mexicanos varados en el extranjero<span>Lamentamos su situación. La SRE hará lo posible de poner en contacto a otro mexicano que desee compartir su casa en un lugar en el pais donde usted se encuentra.</span></h1>
+<form name="miForma" onsubmit="return validarForma()" id="frmGuestData">
+    <div class="section"><span>1</span>Datos personales</div>
+    <div class="inner-wrap">
+        <label>Nombre(s) <input type="text" name="field1" value="Pedro" id="txtNombres" /></label>
+        <label>Apellido paterno  <input type="text" name="field2" id="txtPaterno" value="Páramo"/></label>
+        <label>Apellido materno  <input type="text" name="field3" id="txtMaterno" value="Pérez"/></label>
+        <label>Número de pasaporte  <input type="text" name="field4" id="txtIdPasaporte" value="G123446567"/></label>
+    </div>
+
+    <div class="section"><span>2</span>Datos de contacto</div>
+    <div class="inner-wrap">
+        <label>Correo electrónico <input type="email" name="field5" id="txtEmail" value="pedroppp@gmail.com" /></label>
+        <label>Teléfono <input type="text" name="field6" id="txtTelefono" value="2322322323"/></label>
+    </div>
+
+    <div class="section"><span>3</span>Datos del hogar de acogida</div>
+        <div class="inner-wrap">
+		<span class="Automatic"><input type="checkbox" name="field7" onchange="toggleCheckbox()">Obtener de su ubicación actual</span><p>
+        <label>Dirección <input type="text" name="field8" id="txtDireccion" /></label>
+		<label>Región/Estado <input type="text" name="field9" id="txtRegion" /></label>
+		<label>Cantidad Personas a hospedar
+			<select id="selCantidadPersonas">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
+		</label>
+		<label>País
+		<select id="selPais">
+			<option value="España">España</option>
+			<option value="Estados Unidos de América">Estados Unidos de América</option>
+			<option value="Francia">Francia</option>
+			<option value="México">México</option>
+			<option value="Países Bajos">Países Bajos</option>
+		</select>
+		</label>
+		<div id="map"></div>
+		<input type = "button" name="boton" value="Actualizar mapa" onclick="actualizarMapa()">
+	</div>
+	<div class="section"><span>4</span>Foto</div>
+	<div class="inner-wrap">
+		<div class="camera">
+			<video id="video">Video stream not available.</video>
+
+			<input id="startbutton" type = "button" name="boton" value="Take Foto" onclick="actualizarMapa()">
+		  </div>
+		  <canvas id="canvas">
+		  </canvas>
+		  <div id="photo" class="output">
+
+		  </div>
+</div>
+    <div class="button-section">
+     <input type="button" value="Enviar" name="Sign Up" id="btnSubmitHuesped"/>
+     <span class="privacy-policy">
+     <input type="checkbox" name="field10">Acepta Términos y Condiciones 
+     </span>
+    </div>
+    <input type="hidden" name="longitud">
+    <input type="hidden" name="latitud">
+</form>
+</div>
+
+<script>
+mapkit.init({  
+    authorizationCallback: function(done) {
+    done('eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IlVKOEcyRzQ3MlIifQ.eyJpc3MiOiI2Sk4yODVRVVM4IiwiaWF0IjoxNTg0ODE1MjU2LjI4ODY0LCJleHAiOjE1ODQ5MDE2NTYuMjg4NjR9.qhvqVIQfUwmIKcb2fq60xk_netS9Fbzq7KNZUVdqcpeLSy3JC2BVPxvlcSpw4dltB4a2z4EYOjbF0Iyj9CeJ_A');
+    }
+});
+
+var map = new mapkit.Map("map");
+if (navigator.geolocation) {
+} else { 
+  	// El mapa no soporta geolocalización, no presentar opción
+  	document.miForma.field7.style.display = "none"
+}
+$()
+</script>
+<script src="./js/invoke.js"></script>
+</body>
+</html>
