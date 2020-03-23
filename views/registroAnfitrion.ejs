@@ -338,6 +338,7 @@ function takePicture() {
 	document.getElementById("iconGreen").style.display = "block";
 	document.getElementById("stream").style.display = "none";
 	document.getElementById("snapshot").style.display = "block";
+	$('#capture')[0].setAttribute("captured",true);
 }
 </script>
 </head>
@@ -359,7 +360,7 @@ function takePicture() {
 		<label>Fotografía</label>
 		<div class="streamSection">
 			<video id="stream" width="100%"></video>
-			<canvas id="capture"></canvas>
+			<canvas id="capture" captured=false></canvas>
 		</div>
 		<div class="pictureSection">
 			<div id="snapshot" width="100%"></div>

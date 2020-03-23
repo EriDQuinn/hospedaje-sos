@@ -11,6 +11,10 @@ function validarFormaAnfitrion() {
 		alert("Debe rellenar todos sus datos de contacto");
 		return false;
   }
+  else if( $('#capture')[0].getAttribute("captured") == "false" ){
+    alert("Use el boton verde para fotografiarse. Se debe tomar una foto que coincida con el de su pasaporte.");
+    return false;
+  } 
   return true;
 }
 
@@ -71,7 +75,7 @@ $('#btnSubmitAnfitrion').on('click', function () {
         },
         "disponible": true,
         "verificado": false,
-        "imagen":""
+        "imagen": $('#capture')[0].toDataURL()
       }
       alert( "Enviando json: " + JSON.stringify(dataToSend))
       //llamada asíncrona a servidor
@@ -90,7 +94,7 @@ $('#btnSubmitAnfitrion').on('click', function () {
       }
     }); 
     } else {
-
+      //form was not ok.
     }
 
     //$('#sectionResultado')[0].style.visibility = "visible"
