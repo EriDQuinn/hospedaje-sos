@@ -74,8 +74,8 @@ $('#btnSubmitAnfitrion').on('click', function () {
           "numeroDePasaporte":$('#txtIdPasaporte')[0].value
         },
         "disponible": true,
-        "verificado": false,
-        "imagen": $('#capture')[0].toDataURL()
+        "verificado": false/*,
+        "imagen": $('#capture')[0].toDataURL()*/
       }
       alert( "Enviando json: " + JSON.stringify(dataToSend))
       //llamada asíncrona a servidor

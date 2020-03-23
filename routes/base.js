@@ -29,17 +29,17 @@ router.get('/registroHuesped', function(req, res, next) {
 
 /* Invocación a backend para almacenar anfitrión */
 router.post('/saveAnfitrion', function(req, res, next) {
-  console.log(req.body)
+  //console.log(req.body)
   if (!req.body || req.body.length === 0) {
     return res.status(400).send('Error recibieron datos incorrectos o nulos');
   } else {
-    console.log("Se ha recibido el request para el /saveSolicitante %j",req.body)
-    res.json({data:'ok'})
+    console.log("Se ha recibido el request para el /saveSolicitante")
+    
     //call a Functions off-server
-    /*
+    console.log("Data repo uri " + process.env.DATA_REPO_ANFITRION_URI)
     var options = {
-      method: 'POST',
-      uri: process.env.DATA_REPO_URI,
+      method: 'PUT',
+      uri: process.env.DATA_REPO_ANFITRION_URI,
       body: req.body,
       json: true // Automatically stringifies the body to JSON
     };
@@ -51,22 +51,23 @@ router.post('/saveAnfitrion', function(req, res, next) {
           res.json({data:parsedBody})
       })
       .catch(function (err) {
-        return res.status(400).send('Error al invocar la Function en Google' + err);
+        console.error("Error", err )
+        return res.status(500).send('Error al invocar la función remota' + err);
     });
-    */
+    
   }
 });
 
 /* Invocación a backend para almacenar huesped */
 router.post('/saveHuesped', function(req, res, next) {
-  console.log(req.body)
+  //console.log(req.body)
   if (!req.body || req.body.length === 0) {
     return res.status(400).send('Error recibieron datos incorrectos o nulos');
   } else {
-    console.log("Se ha recibido el request para el /saveHuesped %j",req.body)
+    console.log("Se ha recibido el request para el /saveHuesped")
     res.json({data:'ok'})
     //call a Functions off-server
-    /*
+    /*console.log("Data repo uri " + process.env.DATA_REPO_URI)
     var options = {
       method: 'POST',
       uri: process.env.DATA_REPO_URI,
@@ -81,7 +82,7 @@ router.post('/saveHuesped', function(req, res, next) {
           res.json({data:parsedBody})
       })
       .catch(function (err) {
-        return res.status(400).send('Error al invocar la Function en Google' + err);
+        return res.status(400).send('Error al invocar la Function remota: ' + err);
     });
     */
   }
