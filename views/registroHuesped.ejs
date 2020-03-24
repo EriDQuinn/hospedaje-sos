@@ -5,6 +5,10 @@
 <title>SRE formato de solicitud de ayuda</title>
 <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
 <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="./js/huesped.js"></script>
+<link href="./css/base.css" rel="stylesheet" type="text/css"/>
+
 <style type="text/css">
 body{
 	background:#FFFFFF;
@@ -351,61 +355,14 @@ function takePicture() {
 	document.getElementById("iconGreen").style.display = "block";
 	document.getElementById("stream").style.display = "none";
 	document.getElementById("snapshot").style.display = "block";
-}
-
-// Manejo de la tabla de acompañantes
-
-function agregarRenglon() {
-	if (numRenglones == 0) {
-		// Crear tabla
-        var table = document.createElement("TABLE");
-        table.border = "1";
-
-        var row = table.insertRow(-1);
-        
-		var headers = ["Nombre(s)", "Apellido(s)", "Edad", "Acción"];
-        for (var i = 0; i < 4; i++) {
-            var headerCell = document.createElement("TH");
-            headerCell.innerHTML = headers[i];
-            row.appendChild(headerCell);
-        }
-
-        numRenglones = 1;
-        actualizaNumRenglones();
-
-        var row2 = table.insertRow(-1);
-        
-        for (var i = 0; i < 4; i++) {
-	        var cell = document.createElement("td");
-            var field = document.createElement("input");
-        	if (i < 3) {
-				field.setAttribute("type", "text");
-	            cell.appendChild(field);
-	        } else {
-				field.setAttribute("type", "button");
-				field.setAttribute("value", "Borrar");
-				field.setAttribute("onClick", "borrarRenglon(1)");
-	            cell.appendChild(field);
-	        }
-            row2.appendChild(cell);
-        }
-
-		var divTable = document.getElementById("divTable");
-        divTable.appendChild(table);
-    } else {
-    }
-}
-
-function actualizaNumRenglones() {
-	var label = document.getElementById("Num");
-	label.innerHTML = "Número de acompañantes: " + numRenglones;
+	$('#capture')[0].setAttribute("captured",true);
 }
 </script>
 </head>
 
 <body>
 <center>
-<img src="SRE.png">
+<img src="./images/SRE.png">
 </center>
 
 <div class="form-style-10">
@@ -413,44 +370,46 @@ function actualizaNumRenglones() {
 <form name="miForma" onsubmit="return validarForma()">
     <div class="section"><span>1</span>Datos personales</div>
     <div class="inner-wrap">
-        <label>Nombre(s) <input type="text" name="field1" /></label>
-        <label>Apellido paterno  <input type="text" name="field2" /></label>
-        <label>Apellido materno  <input type="text" name="field3" /></label>
-        <label>Número de pasaporte  <input type="text" name="field4" /></label>
+        <label>Nombre(s) <input type="text" name="field1" id="txtNombres" value="Clara" /></label>
+        <label>Apellido paterno  <input type="text" name="field2" id="txtPaterno" value="Prado"/></label>
+        <label>Apellido materno  <input type="text" name="field3" id="txtMaterno" value="Perez" /></label>
+        <label>Número de pasaporte  <input type="text" name="field4" id="txtIdPasaporte" value="G44333333" /></label>
 		<label>Fotografía</label>
 		<div class="streamSection">
 			<video id="stream" width="100%"></video>
-			<canvas id="capture"></canvas>
+			<canvas id="capture" captured=false></canvas>
 		</div>
 		<div class="pictureSection">
 			<div id="snapshot" width="100%"></div>
 		</div>
 		<div class="greenIconSection">
-			<center><a id="iconGreen" onclick="startStreaming()"><img src="TakePictureGreen.png"></a></center>
+			<center><a id="iconGreen" onclick="startStreaming()"><img src="./images/TakePictureGreen.png"></a></center>
 		</div>
 		<div class="greenIconSection">
-			<center><a id="iconRed" onclick="takePicture()"><img src="TakePictureRed.png"></a></center>
+			<center><a id="iconRed" onclick="takePicture()"><img src="./images/TakePictureRed.png"></a></center>
 		</div>
     </div>
 
     <div class="section"><span>2</span>Acompañantes</div>
     <div class="inner-wrap">
-        <label id="Num">Número de acompañantes: 0</label>
-		<div id="divTable"></div>
+        <label id="lblNumAco">Número de acompañantes: 0</label>
+		<div id="divTable">
+			<table class="invitados-table" id="tblTablaAco"></table>
+		</div>
 		<input type = "button" name="boton" value="Agregar acompañante" onclick="agregarRenglon()">
     </div>
 
     <div class="section"><span>3</span>Datos de contacto</div>
     <div class="inner-wrap">
-        <label>Correo electrónico <input type="email" name="field5" /></label>
-        <label>Teléfono <input type="text" name="field6" /></label>
+        <label>Correo electrónico <input type="email" name="field5" id="txtEmail" value="fsdfa@aaaa.com"/></label>
+        <label>Teléfono <input type="text" name="field6" id="txtTelefono" value="3324234234"/></label>
     </div>
 
     <div class="section"><span>4</span>Ubicación actual</div>
         <div class="inner-wrap">
 		<span class="Automatic"><input type="checkbox" name="field7" onchange="toggleCheckbox()">Obtener de su ubicación actual</span><p>
-        <label>Dirección <input type="text" name="field8" /></label>
-        <label>Región/Estado <input type="text" name="field9" /></label>
+        <label>Dirección <input type="text" name="field8" id="txtDireccion" value="Via Angiamo 33"/></label>
+        <label>Región/Estado <input type="text" name="field9" id="txtRegion" value="Parma"/></label>
 		<label>País
 		<select id="pais">
 			<option value="Alemania">Alemania</option>
@@ -458,7 +417,7 @@ function actualizaNumRenglones() {
 			<option value="España">España</option>
 			<option value="Estados Unidos de América">Estados Unidos de América</option>
 			<option value="Francia">Francia</option>
-			<option value="Italia">Italia</option>
+			<option value="Italia" selected>Italia</option>
 			<option value="México">México</option>
 			<option value="Países Bajos">Países Bajos</option>
 			<option value="Portugal">Portugal</option>
@@ -468,7 +427,7 @@ function actualizaNumRenglones() {
 		<input type = "button" name="boton" value="Actualizar mapa" onclick="actualizarMapa()">
     </div>
     <div class="button-section">
-     <input type="submit" value="Enviar" name="Sign Up" />
+     <input type="button" value="Enviar" name="Sign Up" id="btnSubmitHuesped"/>
      <span class="privacy-policy">
      <input type="checkbox" name="field10">Acepta Términos y Condiciones 
      </span>
@@ -497,6 +456,6 @@ if (navigator.geolocation) {
   	document.miForma.field7.style.display = "none"
 }
 </script>
-
+<script src="./js/invoke.js"></script>
 </body>
 </html>

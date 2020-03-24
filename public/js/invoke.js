@@ -31,6 +31,10 @@ function validarFormaHuesped() {
 		alert("Debe rellenar todos sus datos de contacto");
 		return false;
   }
+  else if( $('#capture')[0].getAttribute("captured") == "false" ){
+    alert("Use el boton verde para fotografiarse. Se debe tomar una foto que coincida con el de su pasaporte.");
+    return false;
+  } 
   return true;
 }
 
@@ -94,21 +98,45 @@ $('#btnSubmitAnfitrion').on('click', function () {
   });
 
   $('#btnSubmitHuesped').on('click', function () { 
-    if(validarFormaHuesped()){
+    datosAcompañantes = getDatosAcompañantes();
+    if(validarFormaAnfitrion()){
       dataToSend = {
-        nombres: $('#txtNombres')[0].value,
-        paterno: $('#txtPaterno')[0].value,
-        materno: $('#txtMaterno')[0].value,
-        idPasaporte: $('#txtIdPasaporte')[0].value,
-        direccion: $('#txtDireccion')[0].value,
-        pais: $('#selPais').val(),
-        cantidad: $('#selCantidadPersonas').val()
+        "datosDeContacto": {
+          "correoElectronico": $('#txtEmail')[0].value.trim(),
+          "telefono": $('#txtTelefono')[0].value.trim()
+        },
+        "datosAcompanantes":getDatosAcompañantes(),
+        "datosDeUbicacion": {
+          "geometry": {
+            "coordinates": [
+              -3.700660,
+              40.417720
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "direccion": $('#txtDireccion')[0].value.trim(),
+            "pais": $('#pais').val(),
+            "regionOEstado": $('#txtDireccion')[0].value.trim(),
+            "capacidad":$('#selCantidadPersonas').val()
+          },
+          "type": "Feature"
+        },
+        "datosPersonales": {
+          "apellidoMaterno": $('#txtMaterno')[0].value.trim(),
+          "apellidoPaterno": $('#txtPaterno')[0].value.trim(),
+          "nombres": $('#txtNombres')[0].value,
+          "numeroDePasaporte":$('#txtIdPasaporte')[0].value.trim()
+        },
+        "disponible": true,
+        "verificado": false,
+        "imagen": $('#capture')[0].toDataURL().substr(22)
       }
       alert( "Enviando json: " + JSON.stringify(dataToSend))
       //llamada asíncrona a servidor
      $.ajax({
       url: '/saveHuesped',
-      type: 'POST',
+      type: 'PUT',
       // Form data
       data: dataToSend,
       dataType: 'json',
@@ -117,7 +145,7 @@ $('#btnSubmitAnfitrion').on('click', function () {
        $(location).attr('href', '/')
       },
       error: function (error) {
-        alert("Error. Ver consola backend y UI")
+        alert("Por el momento no es posible continuar. Intentar más tarde.")
         console.log(error)
       }
     }); 
@@ -130,5 +158,40 @@ $('#btnSubmitAnfitrion').on('click', function () {
 
   });
 
-
-
+$('#btnSiguienteValidacion').on('click', function () { 
+  dataToSend = { "please": "yes"}
+  //llamada asíncrona a servidor
+ $.ajax({
+    url: '/siguienteValidacion',
+    type: 'POST',
+    // Form data
+    data: dataToSend,
+    dataType: 'json',
+    success: function (dataRecibida) {
+      $('#txtNombres')[0].value = dataRecibida.datosPersonales.nombres;
+      $('#txtPaterno')[0].value = dataRecibida.datosPersonales.apellidoPaterno
+      $('#txtMaterno')[0].value = dataRecibida.datosPersonales.apellidoMaterno
+      $('#txtIdPasaporte')[0].value = dataRecibida.datosPersonales.numeroDePasaporte
+      $('#txtTelefono')[0].value = dataRecibida.datosDeContacto.telefono
+      $('#txtEmail')[0].value = dataRecibida.datosDeContacto.correoElectronico
+      $('#divFoto')[0].src = "data:image/png;base64," + dataRecibida.imagen;
+      $('#lblTipo')[0].innerText = dataRecibida.tipo
+      todos = ""
+      datarecibida.datosAcompañantes.forEach(element => {
+        todos = todos + "\n" + 
+                element.nombres + " " + 
+                element.apellidoPaterno + " " + 
+                element.apellidoMaterno + " " +
+                " Sexo: " + element.sexo + ")" + 
+                " Edad: " + element.edad + 
+                " Nacionalidad: " + element.nacionalidad
+      });
+      $('#txtAcompanantes')[0].value = todos
+      alert("Verifique con los servicios consulares que la información es correcta. De ser necesario realice contacto con la persona.")   
+    },
+    error: function (error) {
+      alert("Error. Inténtelo más tarde")
+      console.log(error)
+    }
+  }); 
+})
