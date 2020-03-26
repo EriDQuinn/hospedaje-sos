@@ -71,7 +71,7 @@ $('#btnSubmitAnfitrion').on('click', function () {
         "verificado": false,
         "imagen": $('#capture')[0].toDataURL().substr(22)
       }
-      alert( "Enviando json: " + JSON.stringify(dataToSend))
+      //alert( "Enviando json: " + JSON.stringify(dataToSend))
       //llamada asíncrona a servidor
      $.ajax({
       url: '/saveAnfitrion',
@@ -132,7 +132,7 @@ $('#btnSubmitAnfitrion').on('click', function () {
         "verificado": false,
         "imagen": $('#capture')[0].toDataURL().substr(22)
       }
-      alert( "Enviando json: " + JSON.stringify(dataToSend))
+      //alert( "Enviando json: " + JSON.stringify(dataToSend))
       //llamada asíncrona a servidor
      $.ajax({
       url: '/saveHuesped',
@@ -149,13 +149,7 @@ $('#btnSubmitAnfitrion').on('click', function () {
         console.log(error)
       }
     }); 
-    } else {
-
-    }
-
-    //$('#sectionResultado')[0].style.visibility = "visible"
-    
-
+    } 
   });
 
 $('#btnSiguienteValidacion').on('click', function () { 
@@ -167,31 +161,47 @@ $('#btnSiguienteValidacion').on('click', function () {
     // Form data
     data: dataToSend,
     dataType: 'json',
-    success: function (dataRecibida) {
+    success: function (requestData) {
+      console.log("La data recibida es " + requestData)
+      dataRecibida = requestData.data
       $('#txtNombres')[0].value = dataRecibida.datosPersonales.nombres;
       $('#txtPaterno')[0].value = dataRecibida.datosPersonales.apellidoPaterno
       $('#txtMaterno')[0].value = dataRecibida.datosPersonales.apellidoMaterno
       $('#txtIdPasaporte')[0].value = dataRecibida.datosPersonales.numeroDePasaporte
       $('#txtTelefono')[0].value = dataRecibida.datosDeContacto.telefono
       $('#txtEmail')[0].value = dataRecibida.datosDeContacto.correoElectronico
-      $('#divFoto')[0].src = "data:image/png;base64," + dataRecibida.imagen;
-      $('#lblTipo')[0].innerText = dataRecibida.tipo
-      todos = ""
-      datarecibida.datosAcompañantes.forEach(element => {
-        todos = todos + "\n" + 
-                element.nombres + " " + 
-                element.apellidoPaterno + " " + 
-                element.apellidoMaterno + " " +
-                " Sexo: " + element.sexo + ")" + 
-                " Edad: " + element.edad + 
-                " Nacionalidad: " + element.nacionalidad
-      });
-      $('#txtAcompanantes')[0].value = todos
+      //$('#divFoto')[0].src = "data:image/png;base64," + dataRecibida.imagen;
+      $('#lblTipo')[0].innerText = dataRecibida.tipo != null ?dataRecibida.tipo.toUpperCase() :"Mexicano";
+      $('#hdnId')[0].value=dataRecibida._id
+      $('#hdnRev')[0].value=dataRecibida._rev
       alert("Verifique con los servicios consulares que la información es correcta. De ser necesario realice contacto con la persona.")   
+      $('#btnSiguienteValidacion').hide()
     },
     error: function (error) {
-      alert("Error. Inténtelo más tarde")
+      alert("Por el momento no es posible validar. Inténtelo más tarde.")
       console.log(error)
     }
   }); 
+})
+
+$('#btnValidar').on('click', function () { 
+  //llamada asíncrona a servidor
+  dataToSend = {"_id": $('#hdnId')[0].value,"_rev":$('#hdnRev').value}
+ $.ajax({
+    url: '/validar',
+    type: 'POST',
+    // Form data
+    data: dataToSend,
+    dataType: 'json',
+    success: function (requestData) {
+      console.log("La data recibida es " + requestData)
+      dataRecibida = requestData.data
+      alert("El mexicano ha sido validado.")   
+      $('#btnSiguienteValidacion').show()
+    },
+    error: function (error) {
+      alert("Por el momento no es posible validar. Inténtelo más tarde.")
+      console.log(error)
+    }
+  });
 })

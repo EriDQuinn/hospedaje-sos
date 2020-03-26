@@ -160,24 +160,22 @@ body{
     <div class="section"><span>1</span> <div id="lblTipo">Huésped</div></div>
 	
 	<div class="inner-wrap">
-        <label>Nombre(s) <input type="text" name="field1" value="Pedro" id="txtNombres" /></label>
-        <label>Apellido paterno  <input type="text" name="field2" id="txtPaterno" value="Páramo"/></label>
-        <label>Apellido materno  <input type="text" name="field3" id="txtMaterno" value="Pérez"/></label>
-		<label>Número de pasaporte  <input type="text" name="field4" id="txtIdPasaporte" value="G123446567"/></label>
-		<label>Teléfono  <input type="text" name="field4" id="txtTelefono" value="G123446567"/></label>
-		<label>Email  <input type="text" name="field4" id="txtEmail" value="G123446567"/></label>
+        <label>Nombre(s) <input type="text" name="field1" id="txtNombres" /></label>
+        <label>Apellido paterno  <input type="text" name="field2" id="txtPaterno"/></label>
+        <label>Apellido materno  <input type="text" name="field3" id="txtMaterno"/></label>
+		<label>Número de pasaporte  <input type="text" name="field4" id="txtIdPasaporte"/></label>
+		<label>Teléfono  <input type="text" name="field4" id="txtTelefono" /></label>
+		<label>Email  <input type="text" name="field4" id="txtEmail" /></label>
 		<label>Fotografía</label>
 		<div class="inner-wrap" >
 			<img id="divFoto" />
 		</div>
+		<input type="hidden" id="hdnId"/>
+		<input type="hidden" id="hdnRev"/>
     </div>
+	<input type="button" value="Validar" id="btnValidar" />
 
     
-    <div class="section"><span>2</span>Datos de acompañantes</div>
-        <div class="inner-wrap">
-        	<label>Acompañantes <textarea id="txtAcompanantes"></textarea></label>
-		</div>
-		<input type="button" value="Validar" id="btnValidar" />
 	</div>
 </div>
 </form>
