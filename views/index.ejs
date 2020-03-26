@@ -11,9 +11,9 @@ body{
 	background:#FFFFFF;
 }
 .form-style-10{
-	max-width:450px;
+	max-width:100%;
 	padding:30px;
-	margin:40px auto;
+	margin:2% auto;
 	background: #FFF;
 	border-radius: 10px;
 	-webkit-border-radius:10px;
@@ -141,6 +141,14 @@ body{
     height: 200px;
 }
 
+#EBoton{
+	font-size: 1.2em;
+	width: 50%;
+}
+#EBoton2{
+	font-size: 1.2em;
+	width: 50%;
+}
 </style>
 <script>
 
@@ -155,10 +163,10 @@ body{
 <div class="form-style-10">
 <h1>COVID-19 <span>Gracias a su espíritu solidario podemos ayudar a los mexicanos varados en el extranjero.</span></h1>
 <div class="button-section" style="text-align: center;">
-	<input type="button" value="Puedo hospedar a mexicanos (Anfitrión)" onclick="window.location.href = '/registroAnfitrion';" />
+	<input type="button" value="Puedo hospedar a mexicanos (Anfitrión)" id="EBoton2" onclick="window.location.href = '/registroAnfitrion';" />
 	<br>
 	<br>
-	<input type="button" value="Soy mexicano varado en el extranjero" onclick="window.location.href = '/registroHuesped';"/>
+	<input type="button" value="Soy mexicano varado en el extranjero" id="EBoton" onclick="window.location.href = '/registroHuesped';"/>
 
 </div>
 
